@@ -14,4 +14,43 @@ def get_subagents() -> list[dict]:
       "system_prompt": chỉ dẫn cho subagent
     Gợi ý vai trò: explorer (đọc và báo cáo), implementer (thực hiện), reviewer (kiểm tra độc lập).
     """
-    raise NotImplementedError("TODO: cài đặt get_subagents (xem guides/pseudocode/02_subagents.md)")
+    return [
+        {
+            "name": "explorer",
+            "description": (
+                "Use proactively at the beginning of a task to inspect the workspace, "
+                "read task instructions, explore file structures, examine schemas, docstrings, "
+                "sample data, or error logs. Do not edit files or create artifacts; return a clear, factual summary."
+            ),
+            "system_prompt": (
+                "You are an exploration subagent. Your job is to thoroughly inspect files in workspace/, "
+                "read relevant code, data, logs, and docstrings, and report objective findings and facts. "
+                "Do not create or edit files in workspace/."
+            ),
+        },
+        {
+            "name": "implementer",
+            "description": (
+                "Use when executing changes, modifying code, generating cleaned data or output files in workspace/, "
+                "and executing verification scripts or unit tests."
+            ),
+            "system_prompt": (
+                "You are an implementation subagent. Your job is to implement code fixes or data transformations "
+                "in workspace/ strictly following task requirements and conventions. "
+                "Verify your work using the shell, run relevant python scripts or tests, and report results."
+            ),
+        },
+        {
+            "name": "reviewer",
+            "description": (
+                "Use after implementation to independently audit results against task requirements, "
+                "output schemas, edge cases, and house rules. Do not modify files; return a verification report."
+            ),
+            "system_prompt": (
+                "You are an independent review and QA subagent. Your job is to check the modified workspace/, "
+                "verify output file formats, edge cases, and compliance with all instructions and conventions. "
+                "Do not edit any files. Report any discrepancies or confirm full compliance."
+            ),
+        },
+    ]
+
