@@ -1,0 +1,69 @@
+{
+  "task": "data-eval",
+  "condition": "skills-auto",
+  "role": "eval",
+  "error": null,
+  "timestamp": "2026-10-06T16:04:49.647562+00:00",
+  "skills_sha256": "726229b9b6d87fcc3255cd4beed0b7f8e4d4880056b2b3283303e66a711e5edb",
+  "seconds": 56.5,
+  "tokens": {
+    "input": 86978,
+    "output": 2469,
+    "total": 89447
+  },
+  "tool_calls": 8,
+  "subagent_calls": 0,
+  "skills_read": 0,
+  "skills_modified": false,
+  "final_message": "\n\nI've analyzed the order events and produced `workspace/answer.json`.\n\n## Summary of Data Cleaning\n\n**Process:**\n1. **Deduplication** — Removed 5 duplicate events by keeping only the first occurrence of each order ID (e.g., `A-2006`, `A-2011`, `A-2026`, `A-2047`, `A-2058` appeared twice).\n2. **Total parsing** — Normalized totals from both numbers and strings (e.g., `\"1,250.00\"` → `1250.00`). Orders with `total: -1` were treated as missing and excluded from all revenue calculations.\n3. **Category normalization** — Stripped whitespace and lowercased category names (e.g., `\" garden \"` → `\"garden\"`, `\"TOYS\"` → `\"toys\"`).\n4. **March 2024 detection** — Converted each `placed_at` timestamp to UTC using its offset (e.g., `2024-03-31T22:30:00-05:00` → April 1, 00:30 UTC, so excluded; `2024-03-01T23:59:00Z` → March 1, included).\n\n**Results:**\n- **March 2024 revenue (UTC):** $53,056.44\n- **March 2024 orders (UTC):** 43\n- **Top category:** `toys`\n- **Missing total orders:** 7\n- **Duplicate events removed:** 5",
+  "score": 0.3333333333333333,
+  "passed": 3,
+  "total": 9,
+  "checks": [
+    {
+      "name": "march_revenue_utc",
+      "passed": false,
+      "detail": ""
+    },
+    {
+      "name": "march_orders_utc",
+      "passed": false,
+      "detail": ""
+    },
+    {
+      "name": "top_category",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "missing_total_orders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "duplicate_events_removed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "rule_money_in_cents",
+      "passed": false,
+      "detail": ""
+    },
+    {
+      "name": "rule_meta_block",
+      "passed": false,
+      "detail": ""
+    },
+    {
+      "name": "rule_clean_csv",
+      "passed": false,
+      "detail": ""
+    },
+    {
+      "name": "rule_sorted_keys_format",
+      "passed": false,
+      "detail": ""
+    }
+  ]
+}

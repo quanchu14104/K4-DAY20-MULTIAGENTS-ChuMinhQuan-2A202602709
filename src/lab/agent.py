@@ -159,8 +159,13 @@ def build_agent(sandbox: Path, mode: str = "single", use_skills: bool = False, m
         kwargs["skills"] = ["/skills/"]
         prompt = prompt + SKILLS_NOTE
 
+    if model is None:
+        model = make_model()
+        if hasattr(model, "max_retries"):
+            model.max_retries = 8
+
     return create_deep_agent(
-        model=model if model is not None else make_model(),
+        model=model,
         system_prompt=prompt,
         backend=make_backend(sandbox),
         **kwargs,
